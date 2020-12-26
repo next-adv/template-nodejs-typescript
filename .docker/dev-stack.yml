@@ -1,0 +1,13 @@
+version: "3.8"
+
+networks:
+  ${appName}-dev:
+    driver: overlay
+
+services:
+  ${appName}:
+    networks:
+      - ${appName}-dev
+    environment:
+      - NODE_ENV=dev
+    

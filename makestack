@@ -1,0 +1,26 @@
+#! /bin/bash
+
+set -o allexport; source .env.${1:-dev}; set +o allexport
+
+CLIENT=$(cat ./dockerconfig.json | grep clientTag | awk -F: '{ print $2 }' | sed 's/[\",]//g' | awk '{$1=$1};1')
+NAME=$(cat ./dockerconfig.json | grep imageName | awk -F: '{ print $2 }' | sed 's/[\",]//g' | awk '{$1=$1};1')
+VERSION=$(cat ./package.json | grep version | awk -F: '{ print $2 }' | sed 's/[\",]//g' | awk '{$1=$1};1')
+
+REGISTRY_dev=$(cat ./dockerconfig.json | grep dev | awk -F: '{ print $2 }' | sed 's/[\",]//g' | awk '{$1=$1};1')
+REGISTRY_stage=$(cat ./dockerconfig.json | grep stage | awk -F: '{ print $2 }' | sed 's/[\",]//g' | awk '{$1=$1};1')
+REGISTRY_live=$(cat ./dockerconfig.json | grep live | awk -F: '{ print $2 }' | sed 's/[\",]//g' | awk '{$1=$1};1')
+#export image=${"$REGISTRY_${1:-dev}"}/${CLIENT}/${NAME}:v${VERSION}
+IMAGE=$image:v${VERSION}
+SUBTAG=""
+PRETAG="${NODE_ENV}-"
+if [ "${NODE_ENV}" == "live" ];
+    then
+        SUBTAG="-live"
+elif [ "${NODE_ENV}" == "dev" ];
+    then
+        PRETAG=""
+fi
+
+export image=${IMAGE}${SUBTAG}
+
+yq m ./.docker/stack.yml ./.docker/${NODE_ENV}-stack.yml | envsubst > ${PRETAG}docker-compose.yml

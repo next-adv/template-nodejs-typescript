@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  ${appName}:
+    image: ${image}
+    env_file:
+      - ./.env.${NODE_ENV}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+    

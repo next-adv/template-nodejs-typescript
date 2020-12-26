@@ -1,0 +1,9 @@
+{
+    "imageName": "bootstrap-typescript-node",
+    "clientTag": "example",
+    "registries": {
+        "dev": "0.0.0.0:5000",
+        "stage": "stage-registry.example.com",
+        "live": "registry.example.com"
+    }
+}

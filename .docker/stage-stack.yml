@@ -1,0 +1,13 @@
+version: "3.8"
+
+networks:
+  ${appName}-net:
+    external: true
+
+services:
+  ${appName}:
+    networks:
+      - ${appName}-net
+    environment:
+      - NODE_ENV=stage
+    

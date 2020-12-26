@@ -1,0 +1,1 @@
+export const unique = (array: any) => array.filter((v: any, i: number, a: any) => a.indexOf(v) === i)
